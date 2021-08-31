@@ -14,7 +14,7 @@ jobs:
           python-version: 3.8 #install the python needed
       - name: execute py script # run the run.py to get the latest data
         run: |
-        python run.py
+          python run.py
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
