@@ -9,8 +9,8 @@ jobs:
           ref: ${{ github.head_ref }}
       - id: files
         uses: jitterbit/get-changed-files@v1
-      - name: reformat files
-        uses: actions/Power-BI-VC-Utils
+      - name: Power BI VC Utils
+        uses: nathangiusti/Power-BI-VC-Utils@v1.0
         with:
           files: ${{ steps.files.outputs.all }}
       - uses: stefanzweifel/git-auto-commit-action@v4
