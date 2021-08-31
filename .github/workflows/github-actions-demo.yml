@@ -1,21 +1,18 @@
-name: GitHub Actions Demo
+name: Reformat Power BI Assets
 on: [pull_request]
 jobs:
-  Explore-GitHub-Actions:
+  Reformat-Power-BI-Assets:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
         with:
           ref: ${{ github.head_ref }}
-      - name: setup python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.8 #install the python needed
       - id: files
         uses: jitterbit/get-changed-files@v1
-      - name: execute py script # run the run.py to get the latest data
-        run: |
-          python run.py ${{ steps.files.outputs.all }}
+      - name: Power BI VC Utils
+        uses: nathangiusti/Power-BI-VC-Utils@v1.0
+        with:
+          files: ${{ steps.files.outputs.all }}
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: readme update
+          commit_message: Reformatted files for VC
