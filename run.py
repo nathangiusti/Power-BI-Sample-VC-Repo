@@ -1,4 +1,3 @@
-import os
-files = [f for f in os.listdir('.') if os.path.isfile(f)]
-for f in files:
-    print(f)
+f = open("demofile2.txt", "a")
+f.write("Now the file has more content!")
+f.close()
