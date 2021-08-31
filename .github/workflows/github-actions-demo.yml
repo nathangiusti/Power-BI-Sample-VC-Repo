@@ -11,9 +11,11 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.8 #install the python needed
+      - id: files
+        uses: jitterbit/get-changed-files@v1
       - name: execute py script # run the run.py to get the latest data
         run: |
-          python run.py
+          python run.py ${{ steps.files.outputs.all }}
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: readme update
