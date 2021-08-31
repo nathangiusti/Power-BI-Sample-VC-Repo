@@ -1,1 +1,360 @@
-{"name":"Canada VC Actuals and Targets","description":"","version":"1.0","culture":"en-US","modifiedTime":"2021-08-25T18:00:40.9536433+00:00","pbi:mashup":{"fastCombine":false,"allowNativeQueries":true,"queriesMetadata":{"Distribution Target":{"queryId":"795074e2-8764-4e7d-bb77-da8ff2f5a84c","queryName":"Distribution Target","loadEnabled":true},"Distribution Actual":{"queryId":"b4f66a61-ae27-4f66-8665-5aa31f561dba","queryName":"Distribution Actual","loadEnabled":true},"Volume Actuals":{"queryId":"63a6fe8a-7eeb-4103-9fb7-45cc9272dbe1","queryName":"Volume Actuals","loadEnabled":true},"Volume Targets":{"queryId":"31ee4804-5d62-415e-b3c1-66cb06a223a7","queryName":"Volume Targets","loadEnabled":true},"Execution":{"queryId":"bf088b58-b0f7-4274-a831-8abd9237c54e","queryName":"Execution","loadEnabled":true},"VC Quarter Date":{"queryId":"f370cde2-7b99-414a-a648-4b1d089ac31a","queryName":"VC Quarter Date","loadEnabled":true}},"document":"section Section1;\r\nshared #\"Distribution Target\" = let\r\n  Source = Odbc.Query(\"dsn=Snowflake_ABI_WH\", \"SELECT * FROM CSDI.APP_AAS_FCT_DIST_TGT\"),\r\n  #\"Renamed columns\" = Table.RenameColumns(Source, {{\"QTR_STRT_DT\", \"Start Date\"}, {\"POC_SK\", \"POC PK\"}, {\"BI_ITEM_SK\", \"Item PK\"}, {\"TGT_DIST_CNT\", \"Target\"}}),\r\n  #\"Filtered rows\" = Table.SelectRows(#\"Renamed columns\", each Date.IsInCurrentQuarter([Start Date]) or Date.IsInPreviousQuarter([Start Date]))\r\nin\r\n  #\"Filtered rows\";\r\nshared #\"Distribution Actual\" = let\r\n  Source = Snowflake.Databases(\"abinbev_naz.east-us-2.azure.snowflakecomputing.com\", \"LOAD_WH\", [Role = null, CreateNavigationProperties = null, ConnectionTimeout = null, CommandTimeout = null]),\r\n  Navigation = Source{[Name = \"ABI_WH\", Kind = \"Database\"]}[Data],\r\n  #\"Navigation 1\" = Navigation{[Name = \"CSDI\", Kind = \"Schema\"]}[Data],\r\n  #\"Navigation 2\" = #\"Navigation 1\"{[Name = \"APP_AAS_FCT_POC_PROD_DIST\", Kind = \"View\"]}[Data],\r\n  #\"Filtered rows\" = Table.SelectRows(#\"Navigation 2\", each Date.IsInPreviousQuarter([START_DT]) or Date.IsInCurrentQuarter([START_DT]))\r\nin\r\n  #\"Filtered rows\";\r\nshared #\"Volume Actuals\" = let\r\n  Source = Snowflake.Databases(\"abinbev_naz.east-us-2.azure.snowflakecomputing.com\", \"LOAD_WH\", [Role = null, CreateNavigationProperties = null, ConnectionTimeout = null, CommandTimeout = null]),\r\n  #\"Navigation 1\" = Source{[Name = \"ABI_WH\", Kind = \"Database\"]}[Data],\r\n  #\"Navigation 2\" = #\"Navigation 1\"{[Name = \"CSDI\", Kind = \"Schema\"]}[Data],\r\n  #\"Navigation 3\" = #\"Navigation 2\"{[Name = \"APP_AAS_FCT_POC_SLS\", Kind = \"View\"]}[Data],\r\n  #\"Filtered rows\" = Table.SelectRows(#\"Navigation 3\", each Date.IsInPreviousQuarter([START_DT]) or Date.IsInCurrentQuarter([START_DT]))\r\nin\r\n  #\"Navigation 3\";\r\nshared #\"Volume Targets\" = let\r\n  Source = Snowflake.Databases(\"abinbev_naz.east-us-2.azure.snowflakecomputing.com\", \"LOAD_WH\", [Role = null, CreateNavigationProperties = null, ConnectionTimeout = null, CommandTimeout = null]),\r\n  #\"Navigation 1\" = Source{[Name = \"ABI_WH\", Kind = \"Database\"]}[Data],\r\n  #\"Navigation 2\" = #\"Navigation 1\"{[Name = \"CSDI\", Kind = \"Schema\"]}[Data],\r\n  #\"Navigation 3\" = #\"Navigation 2\"{[Name = \"APP_AAS_FCT_VOL_TGT\", Kind = \"View\"]}[Data],\r\n  #\"Filtered rows\" = Table.SelectRows(#\"Navigation 3\", each Date.IsInPreviousQuarter([START_DT]) or Date.IsInCurrentQuarter([START_DT]))\r\nin\r\n  #\"Navigation 3\";\r\nshared Execution = let\r\n  Source = Odbc.Query(\"dsn=Snowflake_ABI_WH\", \"#(cr)#(lf)SELECT *,#(cr)#(lf)    rank() over (partition by QTR_START_DT, POC_SK order by TARGET_TYPE desc) as rank#(cr)#(lf)FROM CSDI.APP_AAS_FCT_EXECUTION e\"),\r\n  #\"Filtered rows\" = Table.SelectRows(Source, each Date.IsInCurrentQuarter([QTR_START_DT]) or Date.IsInPreviousQuarter([QTR_START_DT]))\r\nin\r\n  #\"Filtered rows\";\r\nshared #\"VC Quarter Date\" = let\r\n  Source = Odbc.Query(\"dsn=Snowflake_ABI_WH\", \"SELECT DISTINCT start_dt, extract(year from start_dt) || ' - Q' || extract(QUARTER from start_dt) year_quarter, monthname(start_dt) month, MOD(month(start_dt), 3) qtr_month_num  from edw.csdi_ref_dt \"),\r\n  #\"Renamed columns\" = Table.RenameColumns(Source, {{\"START_DT\", \"Date\"}, {\"YEAR_QUARTER\", \"Year Quarter\"}, {\"MONTH\", \"Month\"}, {\"QTR_MONTH_NUM\", \"Quarter Month Number\"}}),\r\n  #\"Filtered rows\" = Table.SelectRows(#\"Renamed columns\", each Date.IsInPreviousQuarter([Date]) or Date.IsInCurrentQuarter([Date]))\r\nin\r\n  #\"Filtered rows\";\r\n"},"annotations":[{"name":"pbi:QueryGroups","value":"[]"}],"entities":[{"$type":"LocalEntity","name":"Distribution Target","description":"","pbi:refreshPolicy":{"$type":"FullRefreshPolicy","location":"Distribution%20Target.csv"},"attributes":[{"name":"Start Date","dataType":"date"},{"name":"POC PK","dataType":"double"},{"name":"Item PK","dataType":"double"},{"name":"Target","dataType":"double"}],"partitions":[{"name":"FullRefreshPolicyPartition","refreshTime":"2021-08-31T01:03:10.3780114+00:00","location":"https://wabincuscdsap1.blob.core.windows.net:443/b2e73d19-4d90-47e9-854c-fa6b53906679/Distribution%20Target.csv?snapshot=2021-08-31T01%3A03%3A10.1938270Z"}]},{"$type":"LocalEntity","name":"Distribution Actual","description":"","pbi:refreshPolicy":{"$type":"FullRefreshPolicy","location":"Distribution%20Actual.csv"},"attributes":[{"name":"START_DT","dataType":"date"},{"name":"POC_SK","dataType":"double"},{"name":"BI_ITEM_SK","dataType":"double"},{"name":"DIST_IND","dataType":"double"},{"name":"SLS_ACTV_DIST","dataType":"double"},{"name":"CRFT_ACTV_DIST","dataType":"double"},{"name":"MBC_ACTV_DIST","dataType":"double"}],"partitions":[{"name":"FullRefreshPolicyPartition","refreshTime":"2021-08-31T01:07:47.5115542+00:00","location":"https://wabincuscdsap1.blob.core.windows.net:443/b2e73d19-4d90-47e9-854c-fa6b53906679/Distribution%20Actual.csv?snapshot=2021-08-31T01%3A07%3A32.5308954Z"}]},{"$type":"LocalEntity","name":"Volume Actuals","description":"","pbi:refreshPolicy":{"$type":"FullRefreshPolicy","location":"Volume%20Actuals.csv"},"attributes":[{"name":"SLS_SRC_SK","dataType":"double"},{"name":"POC_SK","dataType":"double"},{"name":"BI_ITEM_SK","dataType":"double"},{"name":"SLS_SUB_CH_SK","dataType":"double"},{"name":"START_DT","dataType":"date"},{"name":"TM_DMN","dataType":"string"},{"name":"SLS_HL","dataType":"double"},{"name":"SLS_VC_TOTAL_SLS_HL","dataType":"double"},{"name":"SLS_VC_BB_SLS_HL","dataType":"double"},{"name":"SLS_VC_HE_SLS_HL","dataType":"double"},{"name":"SLS_VC_DIST_SLS_HL","dataType":"double"},{"name":"MBC_VC_TOTAL_SLS_HL","dataType":"double"},{"name":"MBC_VC_DIST_SLS_HL","dataType":"double"},{"name":"CRFT_VC_TOTAL_SLS_HL","dataType":"double"},{"name":"CRFT_VC_DIST_SLS_HL","dataType":"double"}],"partitions":[{"name":"FullRefreshPolicyPartition","refreshTime":"2021-08-31T02:08:18.3022946+00:00","location":"https://wabincuscdsap1.blob.core.windows.net:443/b2e73d19-4d90-47e9-854c-fa6b53906679/Volume%20Actuals.csv?snapshot=2021-08-31T02%3A07%3A27.9207046Z"}]},{"$type":"LocalEntity","name":"Volume Targets","description":"","pbi:refreshPolicy":{"$type":"FullRefreshPolicy","location":"Volume%20Targets.csv"},"attributes":[{"name":"START_DT","dataType":"date"},{"name":"POC_SK","dataType":"double"},{"name":"BI_ITEM_SK","dataType":"double"},{"name":"PLNG_SCEN_SK","dataType":"double"},{"name":"SRC","dataType":"string"},{"name":"TGT_SLS_HL","dataType":"double"},{"name":"SLS_TOTAL_TGT_HL","dataType":"double"},{"name":"SLS_BB_TGT_HL","dataType":"double"},{"name":"SLS_HE_TGT_HL","dataType":"double"},{"name":"SLS_DIST_TGT_HL","dataType":"double"},{"name":"MBC_TOTAL_TGT_HL","dataType":"double"},{"name":"MBC_DIST_TGT_HL","dataType":"double"},{"name":"CRFT_TOTAL_TGT_HL","dataType":"double"},{"name":"CRFT_DIST_TGT_HL","dataType":"double"}],"partitions":[{"name":"FullRefreshPolicyPartition","refreshTime":"2021-08-31T01:16:42.0606843+00:00","location":"https://wabincuscdsap1.blob.core.windows.net:443/b2e73d19-4d90-47e9-854c-fa6b53906679/Volume%20Targets.csv?snapshot=2021-08-31T01%3A16%3A28.9576529Z"}]},{"$type":"LocalEntity","name":"Execution","description":"","pbi:refreshPolicy":{"$type":"FullRefreshPolicy","location":"Execution.csv"},"attributes":[{"name":"QTR_START_DT","dataType":"date"},{"name":"POC_SK","dataType":"double"},{"name":"ACTUAL","dataType":"double"},{"name":"TARGET","dataType":"double"},{"name":"TARGET_TYPE","dataType":"string"},{"name":"RANK","dataType":"double"}],"partitions":[{"name":"FullRefreshPolicyPartition","refreshTime":"2021-08-31T01:03:06.1527142+00:00","location":"https://wabincuscdsap1.blob.core.windows.net:443/b2e73d19-4d90-47e9-854c-fa6b53906679/Execution.csv?snapshot=2021-08-31T01%3A03%3A05.9773506Z"}]},{"$type":"LocalEntity","name":"VC Quarter Date","description":"","pbi:refreshPolicy":{"$type":"FullRefreshPolicy","location":"VC%20Quarter%20Date.csv"},"attributes":[{"name":"Date","dataType":"date"},{"name":"Year Quarter","dataType":"string"},{"name":"Month","dataType":"string"},{"name":"Quarter Month Number","dataType":"double"}],"partitions":[{"name":"FullRefreshPolicyPartition","refreshTime":"2021-08-31T01:03:06.1371219+00:00","location":"https://wabincuscdsap1.blob.core.windows.net:443/b2e73d19-4d90-47e9-854c-fa6b53906679/VC%20Quarter%20Date.csv?snapshot=2021-08-31T01%3A03%3A05.8762673Z"}]}]}
+{
+    "name": "Canada VC Actuals and Targets",
+    "description": "",
+    "version": "1.0",
+    "culture": "en-US",
+    "modifiedTime": "2021-08-25T18:00:40.9536433+00:00",
+    "pbi:mashup": {
+        "fastCombine": false,
+        "allowNativeQueries": true,
+        "queriesMetadata": {
+            "Distribution Target": {
+                "queryId": "795074e2-8764-4e7d-bb77-da8ff2f5a84c",
+                "queryName": "Distribution Target",
+                "loadEnabled": true
+            },
+            "Distribution Actual": {
+                "queryId": "b4f66a61-ae27-4f66-8665-5aa31f561dba",
+                "queryName": "Distribution Actual",
+                "loadEnabled": true
+            },
+            "Volume Actuals": {
+                "queryId": "63a6fe8a-7eeb-4103-9fb7-45cc9272dbe1",
+                "queryName": "Volume Actuals",
+                "loadEnabled": true
+            },
+            "Volume Targets": {
+                "queryId": "31ee4804-5d62-415e-b3c1-66cb06a223a7",
+                "queryName": "Volume Targets",
+                "loadEnabled": true
+            },
+            "Execution": {
+                "queryId": "bf088b58-b0f7-4274-a831-8abd9237c54e",
+                "queryName": "Execution",
+                "loadEnabled": true
+            },
+            "VC Quarter Date": {
+                "queryId": "f370cde2-7b99-414a-a648-4b1d089ac31a",
+                "queryName": "VC Quarter Date",
+                "loadEnabled": true
+            }
+        },
+        "document": "section Section1;\r\nshared #\"Distribution Target\" = let\r\n  Source = Odbc.Query(\"dsn=Snowflake_ABI_WH\", \"SELECT * FROM CSDI.APP_AAS_FCT_DIST_TGT\"),\r\n  #\"Renamed columns\" = Table.RenameColumns(Source, {{\"QTR_STRT_DT\", \"Start Date\"}, {\"POC_SK\", \"POC PK\"}, {\"BI_ITEM_SK\", \"Item PK\"}, {\"TGT_DIST_CNT\", \"Target\"}}),\r\n  #\"Filtered rows\" = Table.SelectRows(#\"Renamed columns\", each Date.IsInCurrentQuarter([Start Date]) or Date.IsInPreviousQuarter([Start Date]))\r\nin\r\n  #\"Filtered rows\";\r\nshared #\"Distribution Actual\" = let\r\n  Source = Snowflake.Databases(\"abinbev_naz.east-us-2.azure.snowflakecomputing.com\", \"LOAD_WH\", [Role = null, CreateNavigationProperties = null, ConnectionTimeout = null, CommandTimeout = null]),\r\n  Navigation = Source{[Name = \"ABI_WH\", Kind = \"Database\"]}[Data],\r\n  #\"Navigation 1\" = Navigation{[Name = \"CSDI\", Kind = \"Schema\"]}[Data],\r\n  #\"Navigation 2\" = #\"Navigation 1\"{[Name = \"APP_AAS_FCT_POC_PROD_DIST\", Kind = \"View\"]}[Data],\r\n  #\"Filtered rows\" = Table.SelectRows(#\"Navigation 2\", each Date.IsInPreviousQuarter([START_DT]) or Date.IsInCurrentQuarter([START_DT]))\r\nin\r\n  #\"Filtered rows\";\r\nshared #\"Volume Actuals\" = let\r\n  Source = Snowflake.Databases(\"abinbev_naz.east-us-2.azure.snowflakecomputing.com\", \"LOAD_WH\", [Role = null, CreateNavigationProperties = null, ConnectionTimeout = null, CommandTimeout = null]),\r\n  #\"Navigation 1\" = Source{[Name = \"ABI_WH\", Kind = \"Database\"]}[Data],\r\n  #\"Navigation 2\" = #\"Navigation 1\"{[Name = \"CSDI\", Kind = \"Schema\"]}[Data],\r\n  #\"Navigation 3\" = #\"Navigation 2\"{[Name = \"APP_AAS_FCT_POC_SLS\", Kind = \"View\"]}[Data],\r\n  #\"Filtered rows\" = Table.SelectRows(#\"Navigation 3\", each Date.IsInPreviousQuarter([START_DT]) or Date.IsInCurrentQuarter([START_DT]))\r\nin\r\n  #\"Navigation 3\";\r\nshared #\"Volume Targets\" = let\r\n  Source = Snowflake.Databases(\"abinbev_naz.east-us-2.azure.snowflakecomputing.com\", \"LOAD_WH\", [Role = null, CreateNavigationProperties = null, ConnectionTimeout = null, CommandTimeout = null]),\r\n  #\"Navigation 1\" = Source{[Name = \"ABI_WH\", Kind = \"Database\"]}[Data],\r\n  #\"Navigation 2\" = #\"Navigation 1\"{[Name = \"CSDI\", Kind = \"Schema\"]}[Data],\r\n  #\"Navigation 3\" = #\"Navigation 2\"{[Name = \"APP_AAS_FCT_VOL_TGT\", Kind = \"View\"]}[Data],\r\n  #\"Filtered rows\" = Table.SelectRows(#\"Navigation 3\", each Date.IsInPreviousQuarter([START_DT]) or Date.IsInCurrentQuarter([START_DT]))\r\nin\r\n  #\"Navigation 3\";\r\nshared Execution = let\r\n  Source = Odbc.Query(\"dsn=Snowflake_ABI_WH\", \"#(cr)#(lf)SELECT *,#(cr)#(lf)    rank() over (partition by QTR_START_DT, POC_SK order by TARGET_TYPE desc) as rank#(cr)#(lf)FROM CSDI.APP_AAS_FCT_EXECUTION e\"),\r\n  #\"Filtered rows\" = Table.SelectRows(Source, each Date.IsInCurrentQuarter([QTR_START_DT]) or Date.IsInPreviousQuarter([QTR_START_DT]))\r\nin\r\n  #\"Filtered rows\";\r\nshared #\"VC Quarter Date\" = let\r\n  Source = Odbc.Query(\"dsn=Snowflake_ABI_WH\", \"SELECT DISTINCT start_dt, extract(year from start_dt) || ' - Q' || extract(QUARTER from start_dt) year_quarter, monthname(start_dt) month, MOD(month(start_dt), 3) qtr_month_num  from edw.csdi_ref_dt \"),\r\n  #\"Renamed columns\" = Table.RenameColumns(Source, {{\"START_DT\", \"Date\"}, {\"YEAR_QUARTER\", \"Year Quarter\"}, {\"MONTH\", \"Month\"}, {\"QTR_MONTH_NUM\", \"Quarter Month Number\"}}),\r\n  #\"Filtered rows\" = Table.SelectRows(#\"Renamed columns\", each Date.IsInPreviousQuarter([Date]) or Date.IsInCurrentQuarter([Date]))\r\nin\r\n  #\"Filtered rows\";\r\n"
+    },
+    "annotations": [
+        {
+            "name": "pbi:QueryGroups",
+            "value": "[]"
+        }
+    ],
+    "entities": [
+        {
+            "$type": "LocalEntity",
+            "name": "Distribution Target",
+            "description": "",
+            "pbi:refreshPolicy": {
+                "$type": "FullRefreshPolicy",
+                "location": "Distribution%20Target.csv"
+            },
+            "attributes": [
+                {
+                    "name": "Start Date",
+                    "dataType": "date"
+                },
+                {
+                    "name": "POC PK",
+                    "dataType": "double"
+                },
+                {
+                    "name": "Item PK",
+                    "dataType": "double"
+                },
+                {
+                    "name": "Target",
+                    "dataType": "double"
+                }
+            ],
+            "partitions": [
+                {
+                    "name": "FullRefreshPolicyPartition",
+                    "refreshTime": "2021-08-31T01:03:10.3780114+00:00",
+                    "location": "https://wabincuscdsap1.blob.core.windows.net:443/b2e73d19-4d90-47e9-854c-fa6b53906679/Distribution%20Target.csv?snapshot=2021-08-31T01%3A03%3A10.1938270Z"
+                }
+            ]
+        },
+        {
+            "$type": "LocalEntity",
+            "name": "Distribution Actual",
+            "description": "",
+            "pbi:refreshPolicy": {
+                "$type": "FullRefreshPolicy",
+                "location": "Distribution%20Actual.csv"
+            },
+            "attributes": [
+                {
+                    "name": "START_DT",
+                    "dataType": "date"
+                },
+                {
+                    "name": "POC_SK",
+                    "dataType": "double"
+                },
+                {
+                    "name": "BI_ITEM_SK",
+                    "dataType": "double"
+                },
+                {
+                    "name": "DIST_IND",
+                    "dataType": "double"
+                },
+                {
+                    "name": "SLS_ACTV_DIST",
+                    "dataType": "double"
+                },
+                {
+                    "name": "CRFT_ACTV_DIST",
+                    "dataType": "double"
+                },
+                {
+                    "name": "MBC_ACTV_DIST",
+                    "dataType": "double"
+                }
+            ],
+            "partitions": [
+                {
+                    "name": "FullRefreshPolicyPartition",
+                    "refreshTime": "2021-08-31T01:07:47.5115542+00:00",
+                    "location": "https://wabincuscdsap1.blob.core.windows.net:443/b2e73d19-4d90-47e9-854c-fa6b53906679/Distribution%20Actual.csv?snapshot=2021-08-31T01%3A07%3A32.5308954Z"
+                }
+            ]
+        },
+        {
+            "$type": "LocalEntity",
+            "name": "Volume Actuals",
+            "description": "",
+            "pbi:refreshPolicy": {
+                "$type": "FullRefreshPolicy",
+                "location": "Volume%20Actuals.csv"
+            },
+            "attributes": [
+                {
+                    "name": "SLS_SRC_SK",
+                    "dataType": "double"
+                },
+                {
+                    "name": "POC_SK",
+                    "dataType": "double"
+                },
+                {
+                    "name": "BI_ITEM_SK",
+                    "dataType": "double"
+                },
+                {
+                    "name": "SLS_SUB_CH_SK",
+                    "dataType": "double"
+                },
+                {
+                    "name": "START_DT",
+                    "dataType": "date"
+                },
+                {
+                    "name": "TM_DMN",
+                    "dataType": "string"
+                },
+                {
+                    "name": "SLS_HL",
+                    "dataType": "double"
+                },
+                {
+                    "name": "SLS_VC_TOTAL_SLS_HL",
+                    "dataType": "double"
+                },
+                {
+                    "name": "SLS_VC_BB_SLS_HL",
+                    "dataType": "double"
+                },
+                {
+                    "name": "SLS_VC_HE_SLS_HL",
+                    "dataType": "double"
+                },
+                {
+                    "name": "SLS_VC_DIST_SLS_HL",
+                    "dataType": "double"
+                },
+                {
+                    "name": "MBC_VC_TOTAL_SLS_HL",
+                    "dataType": "double"
+                },
+                {
+                    "name": "MBC_VC_DIST_SLS_HL",
+                    "dataType": "double"
+                },
+                {
+                    "name": "CRFT_VC_TOTAL_SLS_HL",
+                    "dataType": "double"
+                },
+                {
+                    "name": "CRFT_VC_DIST_SLS_HL",
+                    "dataType": "double"
+                }
+            ],
+            "partitions": [
+                {
+                    "name": "FullRefreshPolicyPartition",
+                    "refreshTime": "2021-08-31T02:08:18.3022946+00:00",
+                    "location": "https://wabincuscdsap1.blob.core.windows.net:443/b2e73d19-4d90-47e9-854c-fa6b53906679/Volume%20Actuals.csv?snapshot=2021-08-31T02%3A07%3A27.9207046Z"
+                }
+            ]
+        },
+        {
+            "$type": "LocalEntity",
+            "name": "Volume Targets",
+            "description": "",
+            "pbi:refreshPolicy": {
+                "$type": "FullRefreshPolicy",
+                "location": "Volume%20Targets.csv"
+            },
+            "attributes": [
+                {
+                    "name": "START_DT",
+                    "dataType": "date"
+                },
+                {
+                    "name": "POC_SK",
+                    "dataType": "double"
+                },
+                {
+                    "name": "BI_ITEM_SK",
+                    "dataType": "double"
+                },
+                {
+                    "name": "PLNG_SCEN_SK",
+                    "dataType": "double"
+                },
+                {
+                    "name": "SRC",
+                    "dataType": "string"
+                },
+                {
+                    "name": "TGT_SLS_HL",
+                    "dataType": "double"
+                },
+                {
+                    "name": "SLS_TOTAL_TGT_HL",
+                    "dataType": "double"
+                },
+                {
+                    "name": "SLS_BB_TGT_HL",
+                    "dataType": "double"
+                },
+                {
+                    "name": "SLS_HE_TGT_HL",
+                    "dataType": "double"
+                },
+                {
+                    "name": "SLS_DIST_TGT_HL",
+                    "dataType": "double"
+                },
+                {
+                    "name": "MBC_TOTAL_TGT_HL",
+                    "dataType": "double"
+                },
+                {
+                    "name": "MBC_DIST_TGT_HL",
+                    "dataType": "double"
+                },
+                {
+                    "name": "CRFT_TOTAL_TGT_HL",
+                    "dataType": "double"
+                },
+                {
+                    "name": "CRFT_DIST_TGT_HL",
+                    "dataType": "double"
+                }
+            ],
+            "partitions": [
+                {
+                    "name": "FullRefreshPolicyPartition",
+                    "refreshTime": "2021-08-31T01:16:42.0606843+00:00",
+                    "location": "https://wabincuscdsap1.blob.core.windows.net:443/b2e73d19-4d90-47e9-854c-fa6b53906679/Volume%20Targets.csv?snapshot=2021-08-31T01%3A16%3A28.9576529Z"
+                }
+            ]
+        },
+        {
+            "$type": "LocalEntity",
+            "name": "Execution",
+            "description": "",
+            "pbi:refreshPolicy": {
+                "$type": "FullRefreshPolicy",
+                "location": "Execution.csv"
+            },
+            "attributes": [
+                {
+                    "name": "QTR_START_DT",
+                    "dataType": "date"
+                },
+                {
+                    "name": "POC_SK",
+                    "dataType": "double"
+                },
+                {
+                    "name": "ACTUAL",
+                    "dataType": "double"
+                },
+                {
+                    "name": "TARGET",
+                    "dataType": "double"
+                },
+                {
+                    "name": "TARGET_TYPE",
+                    "dataType": "string"
+                },
+                {
+                    "name": "RANK",
+                    "dataType": "double"
+                }
+            ],
+            "partitions": [
+                {
+                    "name": "FullRefreshPolicyPartition",
+                    "refreshTime": "2021-08-31T01:03:06.1527142+00:00",
+                    "location": "https://wabincuscdsap1.blob.core.windows.net:443/b2e73d19-4d90-47e9-854c-fa6b53906679/Execution.csv?snapshot=2021-08-31T01%3A03%3A05.9773506Z"
+                }
+            ]
+        },
+        {
+            "$type": "LocalEntity",
+            "name": "VC Quarter Date",
+            "description": "",
+            "pbi:refreshPolicy": {
+                "$type": "FullRefreshPolicy",
+                "location": "VC%20Quarter%20Date.csv"
+            },
+            "attributes": [
+                {
+                    "name": "Date",
+                    "dataType": "date"
+                },
+                {
+                    "name": "Year Quarter",
+                    "dataType": "string"
+                },
+                {
+                    "name": "Month",
+                    "dataType": "string"
+                },
+                {
+                    "name": "Quarter Month Number",
+                    "dataType": "double"
+                }
+            ],
+            "partitions": [
+                {
+                    "name": "FullRefreshPolicyPartition",
+                    "refreshTime": "2021-08-31T01:03:06.1371219+00:00",
+                    "location": "https://wabincuscdsap1.blob.core.windows.net:443/b2e73d19-4d90-47e9-854c-fa6b53906679/VC%20Quarter%20Date.csv?snapshot=2021-08-31T01%3A03%3A05.8762673Z"
+                }
+            ]
+        }
+    ]
+}
