@@ -14,7 +14,7 @@ def main():
         'grant_type': 'client_credentials',
         'resource': 'https://analysis.windows.net/powerbi/api',
         'response_mode': 'query',
-        'client_secret': os.environ['SECRET']
+        'client_secret': os.environ['CLIENT_SECRET']
     }
 
     resp = requests.get('https://login.microsoftonline.com/{}/oauth2/token'.format(tenant_id), data=data)
