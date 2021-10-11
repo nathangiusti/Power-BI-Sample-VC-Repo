@@ -25,4 +25,5 @@ jobs:
         run: |
           python .github/scripts/run.py ${{ steps.files.outputs.all }}
         env:
-          key: ${{ secrets.key }} # if run.py requires passwords..etc, set it as secrets
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
