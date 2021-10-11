@@ -30,3 +30,6 @@ def main():
                                         .format(bi_360_dev), files=file_import, headers=token)
 
     print(access_token)
+
+if __name__ == '__main__':
+    main()
