@@ -1,5 +1,5 @@
 name: Reformat Power BI Assets
-on: [push]
+on: [pull_request]
 #on:
 #  push:
 #    branches:
