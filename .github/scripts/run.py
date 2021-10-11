@@ -18,7 +18,7 @@ def main():
     }
 
     resp = requests.get('https://login.microsoftonline.com/{}/oauth2/token'.format(tenant_id), data=data)
-    access_token = resp.json('https://api.powerbi.com/v1.0/myorg/groups/{groupId}/imports')['access_token']
+    access_token = resp.json()['access_token']
     token = {
         'Authorization': 'Bearer {}'.format(access_token)
     }
@@ -26,8 +26,8 @@ def main():
     for file in sys.argv:
         if file.endswith('.pbix'):
             file_import = {'file': open(file, 'rb')}
-            response = requests.request("POST", "https://api.powerbi.com/v1.0/myorg/groups/{}/imports"
-                                        .format(bi_360_dev), files=file_import, headers=token)
+            requests.request("POST", "https://api.powerbi.com/v1.0/myorg/groups/{}/imports".format(bi_360_dev),
+                             files=file_import, headers=token)
 
     print(access_token)
 
