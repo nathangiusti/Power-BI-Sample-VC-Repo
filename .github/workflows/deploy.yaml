@@ -1,0 +1,24 @@
+name: Reformat Power BI Assets
+on: [push]
+#on:
+#  push:
+#    branches:
+#      - master
+jobs:
+  Deploy-Asset:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
+      - id: files
+        uses: jitterbit/get-changed-files@v1
+      - name: setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8 #install the python needed
+      - name: execute py script # run the run.py to get the latest data
+        run: |
+          python .github/scripts/run.py ${{ steps.files.outputs.all }}
+        env:
+          key: ${{ secrets.key }} # if run.py requires passwords..etc, set it as secrets
