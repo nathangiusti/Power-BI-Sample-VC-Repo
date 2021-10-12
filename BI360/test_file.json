@@ -25,22 +25,22 @@
             "ordinal": 0,
             "visualContainers": [
                 {
-                    "x": 10,
+                    "x": 16,
                     "y": 0,
                     "z": 0,
-                    "width": 280,
-                    "height": 280,
+                    "width": 400,
+                    "height": 384.00000000000006,
                     "config": {
                         "name": "1f51c1e43a10e23193bf",
                         "layouts": [
                             {
                                 "id": 0,
                                 "position": {
-                                    "x": 10,
+                                    "x": 16,
                                     "y": 0,
-                                    "width": 280,
-                                    "height": 280,
-                                    "z": 0
+                                    "z": 0,
+                                    "width": 400,
+                                    "height": 384.00000000000006
                                 }
                             }
                         ],
