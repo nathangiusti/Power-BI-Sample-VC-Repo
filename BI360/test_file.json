@@ -23,7 +23,65 @@
             "displayName": "Page 1",
             "filters": "[]",
             "ordinal": 0,
-            "visualContainers": [],
+            "visualContainers": [
+                {
+                    "x": 10,
+                    "y": 0,
+                    "z": 0,
+                    "width": 280,
+                    "height": 280,
+                    "config": {
+                        "name": "1f51c1e43a10e23193bf",
+                        "layouts": [
+                            {
+                                "id": 0,
+                                "position": {
+                                    "x": 10,
+                                    "y": 0,
+                                    "width": 280,
+                                    "height": 280,
+                                    "z": 0
+                                }
+                            }
+                        ],
+                        "singleVisual": {
+                            "visualType": "tableEx",
+                            "projections": {
+                                "Values": [
+                                    {
+                                        "queryRef": "fact_pda_data.ANNUAL_POC_NAME"
+                                    }
+                                ]
+                            },
+                            "prototypeQuery": {
+                                "Version": 2,
+                                "From": [
+                                    {
+                                        "Name": "f",
+                                        "Entity": "fact_pda_data",
+                                        "Type": 0
+                                    }
+                                ],
+                                "Select": [
+                                    {
+                                        "Column": {
+                                            "Expression": {
+                                                "SourceRef": {
+                                                    "Source": "f"
+                                                }
+                                            },
+                                            "Property": "ANNUAL_POC_NAME"
+                                        },
+                                        "Name": "fact_pda_data.ANNUAL_POC_NAME"
+                                    }
+                                ]
+                            },
+                            "drillFilterOtherVisuals": true
+                        }
+                    },
+                    "filters": []
+                }
+            ],
             "config": "{}",
             "displayOption": 1,
             "width": 1280,
@@ -41,6 +99,7 @@
         },
         "activeSectionIndex": 0,
         "defaultDrillFilterOtherVisuals": true,
+        "linguisticSchemaSyncVersion": 0,
         "settings": {
             "useNewFilterPaneExperience": true,
             "allowChangeFilterTypes": true,
