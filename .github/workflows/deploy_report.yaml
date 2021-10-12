@@ -1,9 +1,8 @@
 name: Deploy Assets
-on: [pull_request]
-#on:
-#  push:
-#    branches:
-#      - master
+on:
+  push:
+    branches:
+      - master
 jobs:
   Deploy-Asset:
     runs-on: ubuntu-latest
