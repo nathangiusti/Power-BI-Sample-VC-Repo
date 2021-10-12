@@ -21,9 +21,10 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install requests
-      - name: execute py script # run the run.py to get the latest data
+          pip install PyYAML
+      - name: execute py script
         run: |
-          python .github/scripts/run.py ${{ steps.files.outputs.all }}
+          python .github/scripts/deploy_report.py ${{ steps.files.outputs.all }}
         env:
           CLIENT_ID: ${{ secrets.CLIENT_ID }}
           CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
