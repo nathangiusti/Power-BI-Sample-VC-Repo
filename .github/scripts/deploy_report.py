@@ -9,7 +9,7 @@ tenant_id = 'cef04b19-7776-4a94-b89b-375c77a8f936'
 
 
 def main():
-    with open('deploy_config.yaml', 'r') as yml_file:
+    with open('.github/scripts/deploy_config.yaml', 'r') as yml_file:
         cfg = yaml.safe_load(yml_file)
 
     data = {
