@@ -2,7 +2,7 @@ name: Deploy Assets
 on:
   push:
     branches:
-      - master
+      - main
 jobs:
   Deploy-Asset:
     runs-on: ubuntu-latest
