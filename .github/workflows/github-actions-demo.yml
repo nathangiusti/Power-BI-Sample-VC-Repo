@@ -9,6 +9,11 @@ jobs:
           ref: ${{ github.head_ref }}
       - name: Changed files
         uses: tj-actions/changed-files@v11.7
+      - name: List all modified files
+        run: |
+          for file in ${{ steps.changed-files.outputs.all_modified_files }}; do
+            echo "$file was modified"
+          done
       - name: Power BI VC Utils
         uses: nathangiusti/Power-BI-VC-Utils@v2.1
         with:
