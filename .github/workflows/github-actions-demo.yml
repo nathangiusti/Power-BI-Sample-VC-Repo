@@ -10,7 +10,7 @@ jobs:
       - name: Changed files
         uses: tj-actions/changed-files@v11.7
       - name: Power BI VC Utils
-        uses: nathangiusti/Power-BI-VC-Utils@v1.0
+        uses: nathangiusti/Power-BI-VC-Utils@v2.1
         with:
           files: ${{ steps.changed-files.outputs.all_modified_files }}
       - uses: stefanzweifel/git-auto-commit-action@v4
