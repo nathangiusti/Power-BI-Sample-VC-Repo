@@ -7,12 +7,12 @@ jobs:
       - uses: actions/checkout@v2
         with:
           ref: ${{ github.head_ref }}
-      - id: files
-        uses: jitterbit/get-changed-files@v1
+      - name: Changed files
+        uses: tj-actions/changed-files@v11.7
       - name: Power BI VC Utils
         uses: nathangiusti/Power-BI-VC-Utils@v1.0
         with:
-          files: ${{ steps.files.outputs.all }}
+          files: ${{ steps.changed-files.outputs.all_modified_files }}
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Reformatted files for VC
