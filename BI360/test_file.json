@@ -28,8 +28,8 @@
                     "x": 16,
                     "y": 0,
                     "z": 0,
-                    "width": 400,
-                    "height": 384.00000000000006,
+                    "width": 192,
+                    "height": 384,
                     "config": {
                         "name": "1f51c1e43a10e23193bf",
                         "layouts": [
@@ -39,8 +39,8 @@
                                     "x": 16,
                                     "y": 0,
                                     "z": 0,
-                                    "width": 400,
-                                    "height": 384.00000000000006
+                                    "width": 192,
+                                    "height": 384
                                 }
                             }
                         ],
@@ -79,7 +79,109 @@
                             "drillFilterOtherVisuals": true
                         }
                     },
-                    "filters": []
+                    "filters": [],
+                    "query": {
+                        "Commands": [
+                            {
+                                "SemanticQueryDataShapeCommand": {
+                                    "Query": {
+                                        "Version": 2,
+                                        "From": [
+                                            {
+                                                "Name": "f",
+                                                "Entity": "fact_pda_data",
+                                                "Type": 0
+                                            }
+                                        ],
+                                        "Select": [
+                                            {
+                                                "Column": {
+                                                    "Expression": {
+                                                        "SourceRef": {
+                                                            "Source": "f"
+                                                        }
+                                                    },
+                                                    "Property": "ANNUAL_POC_NAME"
+                                                },
+                                                "Name": "fact_pda_data.ANNUAL_POC_NAME"
+                                            }
+                                        ]
+                                    },
+                                    "Binding": {
+                                        "Primary": {
+                                            "Groupings": [
+                                                {
+                                                    "Projections": [
+                                                        0
+                                                    ],
+                                                    "Subtotal": 1
+                                                }
+                                            ]
+                                        },
+                                        "DataReduction": {
+                                            "DataVolume": 3,
+                                            "Primary": {
+                                                "Window": {
+                                                    "Count": 500
+                                                }
+                                            }
+                                        },
+                                        "Version": 1
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    "dataTransforms": {
+                        "projectionOrdering": {
+                            "Values": [
+                                0
+                            ]
+                        },
+                        "queryMetadata": {
+                            "Select": [
+                                {
+                                    "Restatement": "ANNUAL_POC_NAME",
+                                    "Name": "fact_pda_data.ANNUAL_POC_NAME",
+                                    "Type": 2048
+                                }
+                            ]
+                        },
+                        "visualElements": [
+                            {
+                                "DataRoles": [
+                                    {
+                                        "Name": "Values",
+                                        "Projection": 0,
+                                        "isActive": false
+                                    }
+                                ]
+                            }
+                        ],
+                        "selects": [
+                            {
+                                "displayName": "ANNUAL_POC_NAME",
+                                "queryName": "fact_pda_data.ANNUAL_POC_NAME",
+                                "roles": {
+                                    "Values": true
+                                },
+                                "type": {
+                                    "category": null,
+                                    "underlyingType": 1
+                                },
+                                "expr": {
+                                    "Column": {
+                                        "Expression": {
+                                            "SourceRef": {
+                                                "Entity": "fact_pda_data"
+                                            }
+                                        },
+                                        "Property": "ANNUAL_POC_NAME"
+                                    }
+                                }
+                            }
+                        ]
+                    }
                 }
             ],
             "config": "{}",
