@@ -1,8 +1,5 @@
-name: Migrate to prod
-on:
-  push:
-    branches:
-      - main
+name: Deploy to test
+on: [pull_request]
 jobs:
   Deploy-Asset:
     runs-on: ubuntu-latest
@@ -15,8 +12,8 @@ jobs:
         uses: tj-actions/changed-files@v12
         with:
           separator: ","
-      - name: Power BI Pipeline Deploy
-        uses: nathangiusti/Power-BI-Pipeline-Deploy@v2.1
+      - name: Power BI Workspace Deploy
+        uses: nathangiusti/Power-BI-Workspace-Deploy@v1.0
         with:
           files: ${{ steps.changed-files.outputs.all_modified_files }}
         env:
