@@ -20,5 +20,5 @@ jobs:
         with:
           files: ${{ steps.changed-files.outputs.all_modified_files }}
         env:
-          CLIENT_ID: ${{ secrets.NON_PROD_SPN_ID }}
-          CLIENT_SECRET: ${{ secrets.NON_PROD_SPN_SECRET }}
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
