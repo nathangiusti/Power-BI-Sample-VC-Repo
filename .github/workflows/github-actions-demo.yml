@@ -8,11 +8,13 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
           fetch-depth: 1
-      - name: Changed files
+      - name: Get changed files
         id: changed-files
-        uses: jitterbit/get-changed-files@v1
+        uses: tj-actions/changed-files@v12
+        with:
+          separator: ","
       - name: Power BI VC Utils
-        uses: nathangiusti/Power-BI-VC-Utils@v2.1
+        uses: nathangiusti/Power-BI-VC-Utils@v2.2
         with:
           files: ${{ steps.files.outputs.all }}
       - uses: stefanzweifel/git-auto-commit-action@v4
