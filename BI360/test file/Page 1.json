@@ -1,0 +1,172 @@
+{
+    "id": 0,
+    "name": "ReportSection",
+    "displayName": "Page 1",
+    "filters": [],
+    "ordinal": 0,
+    "visualContainers": [
+        {
+            "x": 328,
+            "y": 192,
+            "z": 0,
+            "width": 552,
+            "height": 408,
+            "config": {
+                "name": "1f51c1e43a10e23193bf",
+                "layouts": [
+                    {
+                        "id": 0,
+                        "position": {
+                            "x": 328,
+                            "y": 192,
+                            "z": 0,
+                            "width": 552,
+                            "height": 408
+                        }
+                    }
+                ],
+                "singleVisual": {
+                    "visualType": "tableEx",
+                    "projections": {
+                        "Values": [
+                            {
+                                "queryRef": "fact_pda_data.ANNUAL_POC_NAME"
+                            }
+                        ]
+                    },
+                    "prototypeQuery": {
+                        "Version": 2,
+                        "From": [
+                            {
+                                "Name": "f",
+                                "Entity": "fact_pda_data",
+                                "Type": 0
+                            }
+                        ],
+                        "Select": [
+                            {
+                                "Column": {
+                                    "Expression": {
+                                        "SourceRef": {
+                                            "Source": "f"
+                                        }
+                                    },
+                                    "Property": "ANNUAL_POC_NAME"
+                                },
+                                "Name": "fact_pda_data.ANNUAL_POC_NAME"
+                            }
+                        ]
+                    },
+                    "drillFilterOtherVisuals": true
+                }
+            },
+            "filters": [],
+            "query": {
+                "Commands": [
+                    {
+                        "SemanticQueryDataShapeCommand": {
+                            "Query": {
+                                "Version": 2,
+                                "From": [
+                                    {
+                                        "Name": "f",
+                                        "Entity": "fact_pda_data",
+                                        "Type": 0
+                                    }
+                                ],
+                                "Select": [
+                                    {
+                                        "Column": {
+                                            "Expression": {
+                                                "SourceRef": {
+                                                    "Source": "f"
+                                                }
+                                            },
+                                            "Property": "ANNUAL_POC_NAME"
+                                        },
+                                        "Name": "fact_pda_data.ANNUAL_POC_NAME"
+                                    }
+                                ]
+                            },
+                            "Binding": {
+                                "Primary": {
+                                    "Groupings": [
+                                        {
+                                            "Projections": [
+                                                0
+                                            ],
+                                            "Subtotal": 1
+                                        }
+                                    ]
+                                },
+                                "DataReduction": {
+                                    "DataVolume": 3,
+                                    "Primary": {
+                                        "Window": {
+                                            "Count": 500
+                                        }
+                                    }
+                                },
+                                "Version": 1
+                            }
+                        }
+                    }
+                ]
+            },
+            "dataTransforms": {
+                "projectionOrdering": {
+                    "Values": [
+                        0
+                    ]
+                },
+                "queryMetadata": {
+                    "Select": [
+                        {
+                            "Restatement": "ANNUAL_POC_NAME",
+                            "Name": "fact_pda_data.ANNUAL_POC_NAME",
+                            "Type": 2048
+                        }
+                    ]
+                },
+                "visualElements": [
+                    {
+                        "DataRoles": [
+                            {
+                                "Name": "Values",
+                                "Projection": 0,
+                                "isActive": false
+                            }
+                        ]
+                    }
+                ],
+                "selects": [
+                    {
+                        "displayName": "ANNUAL_POC_NAME",
+                        "queryName": "fact_pda_data.ANNUAL_POC_NAME",
+                        "roles": {
+                            "Values": true
+                        },
+                        "type": {
+                            "category": null,
+                            "underlyingType": 1
+                        },
+                        "expr": {
+                            "Column": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Entity": "fact_pda_data"
+                                    }
+                                },
+                                "Property": "ANNUAL_POC_NAME"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    ],
+    "config": {},
+    "displayOption": 1,
+    "width": 1280,
+    "height": 720
+}
