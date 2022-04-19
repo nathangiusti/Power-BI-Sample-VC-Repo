@@ -1,17 +1,23 @@
-name: Reformat Power BI Assets
+name: Deserialize PBIX
 on: [pull_request]
 jobs:
-  Reformat-Power-BI-Assets:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: Get changed files
-        id: changed-files
-        uses: tj-actions/changed-files@v18.2
-      - name: List all changed files
-        run: |
-          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-            echo "$file was changed"
-          done
+  deserialize-pbix-files:
+      name: Deserialize PBIX files
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v2
+          with:
+            fetch-depth: 0
+        - name: Get changed files
+          id: changed-files
+          uses: tj-actions/changed-files@v12
+          with:
+            separator: ","
+        - name: Power BI VC Utils
+          uses: ab-inbev-labs/powerbi-actions/deserialize-pbix@v0.0.1
+          with:
+            files: ${{ steps.changed-files.outputs.all_modified_files }}
+            separator: ","
+        - uses: stefanzweifel/git-auto-commit-action@v4
+          with:
+            commit_message: Reformatted files for VC
