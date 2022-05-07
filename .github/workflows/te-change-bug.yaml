@@ -1,7 +1,8 @@
-name: Reformat Power BI Assets
+name: Deserialize PBIX
 on: [pull_request]
 jobs:
-  Reformat-Power-BI-Assets:
+  deserialize-pbix-files:
+    name: Deserialize PBIX files
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -9,9 +10,14 @@ jobs:
           fetch-depth: 0
       - name: Get changed files
         id: changed-files
-        uses: tj-actions/changed-files@v18.2
+        uses: tj-actions/changed-files@v19
+        with:
+          separator: ","
+          files: *.txt
+          quote_path: true
       - name: List all changed files
         run: |
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
             echo "$file was changed"
           done
+
