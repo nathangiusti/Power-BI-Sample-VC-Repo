@@ -13,7 +13,8 @@ jobs:
         uses: tj-actions/changed-files@v19
         with:
           separator: ","
-          files: *.txt
+          files: |
+            *.txt
           quote_path: true
       - name: List all changed files
         run: |
