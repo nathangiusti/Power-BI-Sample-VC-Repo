@@ -19,7 +19,7 @@ jobs:
           files: ${{ steps.changed-files.outputs.all_modified_files }}
           separator: ","
           tenant_id: "cef04b19-7776-4a94-b89b-375c77a8f936"
-          config_file: "./github/config/deploy_config.yaml"
+          config_file: ".github/config/deploy_config.yaml"
         env:
           CLIENT_ID: ${{ secrets.NON_PROD_SPN_ID }}
           CLIENT_SECRET: ${{ secrets.NON_PROD_SPN_SECRET }}
