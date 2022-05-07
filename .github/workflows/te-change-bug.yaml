@@ -1,7 +1,7 @@
-name: Reformat Power BI Assets
+name: Deploy to test
 on: [pull_request]
 jobs:
-  Reformat-Power-BI-Assets:
+  Deploy-Asset:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -9,9 +9,24 @@ jobs:
           fetch-depth: 0
       - name: Get changed files
         id: changed-files
-        uses: tj-actions/changed-files@v18.2
+        uses: tj-actions/changed-files@v19
+        with:
+          separator: ","
+          quotepath: "false"
+      - name: Power BI Workspace Deploy
+        uses: nathangiusti/Power-BI-Workspace-Deploy@main
+        with:
+          files: ${{ steps.changed-files.outputs.all_modified_files }}
+          separator: ","
+          tenant_id: "cef04b19-7776-4a94-b89b-375c77a8f936"
+          config_file: "./github/config/deploy_config.yaml"
+        env:
+          CLIENT_ID: ${{ secrets.NON_PROD_SPN_ID }}
+          CLIENT_SECRET: ${{ secrets.NON_PROD_SPN_SECRET }}
+
       - name: List all changed files
         run: |
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
             echo "$file was changed"
           done
+
