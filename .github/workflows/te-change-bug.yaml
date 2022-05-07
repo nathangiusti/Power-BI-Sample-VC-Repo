@@ -15,7 +15,7 @@ jobs:
           separator: ","
           files: |
             *.txt
-          quote_path: true
+          quote_path: false
       - name: List all changed files
         run: |
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
