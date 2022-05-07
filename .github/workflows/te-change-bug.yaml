@@ -13,7 +13,7 @@ jobs:
         uses: tj-actions/changed-files@v19
         with:
           separator: ","
-          quote_path: "false"
+          quotepath: "false"
       - name: List all changed files
         run: |
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
