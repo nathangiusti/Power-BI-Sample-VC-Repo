@@ -1,19 +1,19 @@
 {
-  "type": "calculatedTableColumn",
-  "name": "Date",
-  "dataType": "dateTime",
-  "isNameInferred": true,
-  "isDataTypeInferred": true,
-  "isHidden": true,
-  "sourceColumn": "[Date]",
-  "formatString": "General Date",
-  "lineageTag": "2974972f-8352-406e-a42d-9f84f3effb4c",
-  "dataCategory": "PaddedDateTableDates",
-  "summarizeBy": "none",
-  "annotations": [
-    {
-      "name": "SummarizationSetBy",
-      "value": "User"
-    }
-  ]
+    "type": "calculatedTableColumn",
+    "name": "Date",
+    "dataType": "dateTime",
+    "isNameInferred": true,
+    "isDataTypeInferred": true,
+    "isHidden": true,
+    "sourceColumn": "[Date]",
+    "formatString": "General Date",
+    "lineageTag": "2974972f-8352-406e-a42d-9f84f3effb4c",
+    "dataCategory": "PaddedDateTableDates",
+    "summarizeBy": "none",
+    "annotations": [
+        {
+            "name": "SummarizationSetBy",
+            "value": "User"
+        }
+    ]
 }
