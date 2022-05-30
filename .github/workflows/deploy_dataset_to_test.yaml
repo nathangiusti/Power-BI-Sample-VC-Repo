@@ -1,0 +1,14 @@
+name: Deploy to test
+on: [pull_request]
+jobs:
+  deploy_to_test:
+    uses: nathangiusti/Power-BI-Reusable-Workflows/.github/workflows/te-deploy.yml@main
+    with:
+      folder: Datasets
+      tenant_id: cef04b19-7776-4a94-b89b-375c77a8f936
+      config_file: .github/config/test_dataset_deploy.yaml
+      deploy_roles: true
+      deploy_partitions: true
+    secrets:
+      client_id: ${{ secrets.NON_PROD_SPN_ID }}
+      client_secret: ${{ secrets.NON_PROD_SPN_SECRET }}

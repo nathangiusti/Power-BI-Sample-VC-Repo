@@ -1,0 +1,11 @@
+name: Deploy to test
+on: [pull_request]
+jobs:
+  workspace-deploy:
+    uses: nathangiusti/Power-BI-Reusable-Workflows/.github/workflows/workspace-deploy.yml@main
+    with:
+      tenant_id: cef04b19-7776-4a94-b89b-375c77a8f936
+      config_file: .github/config/report_deploy_config.yaml
+    secrets:
+      client_id: ${{ secrets.NON_PROD_SPN_ID }}
+      client_secret: ${{ secrets.NON_PROD_SPN_SECRET }} 
