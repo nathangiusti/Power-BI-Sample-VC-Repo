@@ -11,5 +11,5 @@ jobs:
       config_file: .github/config/report_deploy_config.yaml
       source_stage_order: 1
     secrets:
-      client_id: ${{ secrets.NON_PROD_SPN_ID }}
-      client_secret: ${{ secrets.NON_PROD_SPN_SECRET }} 
+      client_id: ${{ secrets.CLIENT_ID }}
+      client_secret: ${{ secrets.CLIENT_SECRET }} 

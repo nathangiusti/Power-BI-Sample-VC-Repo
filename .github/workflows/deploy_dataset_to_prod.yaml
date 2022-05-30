@@ -1,5 +1,8 @@
 name: Deploy to prod
-on: [pull_request]
+on:
+  push:
+    branches:
+      - main
 jobs:
   deploy_to_test:
     uses: nathangiusti/Power-BI-Reusable-Workflows/.github/workflows/te-deploy.yml@main
@@ -10,5 +13,5 @@ jobs:
       deploy_roles: true
       deploy_partitions: true
     secrets:
-      client_id: ${{ secrets.NON_PROD_SPN_ID }}
-      client_secret: ${{ secrets.NON_PROD_SPN_SECRET }}
+      client_id: ${{ secrets.CLIENT_ID }}
+      client_secret: ${{ secrets.CLIENT_SECRET }}
