@@ -14,9 +14,9 @@ For more details on the reusable workflow including additional configuration opt
 
 Before using these workflows you may have to update how you develop in Power BI. The workflow given here is generally considered to be best practice for enterprise managed Power BI.
 
-## Service Princple
+## Service Principal
 
-For many of these actions you will need a service princple with which to run the API's. Create a service princple with the necessary permissions and add the credentails to your GitHub's environment so that they can be referenced. 
+For many of these actions you will need a service principal with which to run the API's. Create a service principal with the necessary permissions and add the credentials to your GitHub's environment so that they can be referenced. 
 
 ## Tabular Editor
 
@@ -94,7 +94,7 @@ jobs:
 
 ## [deploy_dataset_to_test.yaml](.github/workflows/deploy_dataset_to_test.yaml)
 
-This workflow deploys a dataset to our test workspace on creation of a pull request. Similar to reports you must create a configuraion file to map folder names to workspace urls. The format is different than the config file for reports. See the sameple [here](.github/config/test_dataset_deploy.yaml)
+This workflow deploys a dataset to our test workspace on creation of a pull request. Similar to reports you must create a configuration file to map folder names to workspace urls. The format is different than the config file for reports. See the sample [here](.github/config/test_dataset_deploy.yaml)
 
 If reports and datasets are being version controlled in the same repo, you will need to create a separate folder to house your datasets in order to prevent confusion with other json files in the repo. Pass that folder as an argument to the workflow. If datasets are in their own repo, they require only the workspace folders. 
 
