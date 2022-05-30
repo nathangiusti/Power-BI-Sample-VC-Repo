@@ -1,0 +1,7 @@
+name: Reformat Power BI Assets
+on: [pull_request]
+jobs:
+  Deserialize-PBIX-Files:
+    uses: nathangiusti/Power-BI-Reusable-Workflows/.github/workflows/deserialize-pbix.yml@main
+    with:
+      commit_message: "Deserialize PBIX files"

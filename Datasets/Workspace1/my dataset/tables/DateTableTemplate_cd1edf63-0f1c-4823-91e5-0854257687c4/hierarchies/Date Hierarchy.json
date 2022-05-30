@@ -1,0 +1,36 @@
+{
+    "name": "Date Hierarchy",
+    "lineageTag": "46ded62c-6149-407f-8c59-d17480ed26aa",
+    "levels": [
+        {
+            "name": "Year",
+            "ordinal": 0,
+            "column": "Year",
+            "lineageTag": "9a909b3a-60c7-4aee-a416-2e27c9f3a630"
+        },
+        {
+            "name": "Quarter",
+            "ordinal": 1,
+            "column": "Quarter",
+            "lineageTag": "5f5a5674-6d48-413c-b91d-041127430e2a"
+        },
+        {
+            "name": "Month",
+            "ordinal": 2,
+            "column": "Month",
+            "lineageTag": "44b865c7-8b89-479d-ac58-0ed563158b81"
+        },
+        {
+            "name": "Day",
+            "ordinal": 3,
+            "column": "Day",
+            "lineageTag": "1c86263a-a263-4a44-ab5d-34872fa3de72"
+        }
+    ],
+    "annotations": [
+        {
+            "name": "TemplateId",
+            "value": "DateHierarchy"
+        }
+    ]
+}
