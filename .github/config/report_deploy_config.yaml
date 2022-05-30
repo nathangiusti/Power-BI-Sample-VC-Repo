@@ -1,6 +1,6 @@
 Workspace1:
-  workspace_id:  'b5151f96-3b01-4b17-bc95-cce8630832ac'
-  pipeline_id: 'd85e476b-169b-44cc-aed8-9520b3f0274e'
+  workspace_id:  'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+  pipeline_id: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
 Workspace2:
-  workspace_id:  'c394e4f1-9a94-4fb0-8e35-bf32b28e83da'
-  pipeline_id: 'a84ab52e-698a-4e51-a8de-5d13405a45b5'
+  workspace_id:  'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+  pipeline_id: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
