@@ -4,6 +4,10 @@ This repository contains a sample implementation of DevOps for Power BI.
 
 In this readme I will explain what each of the workflows is doing. 
 
+The workflow used here is that when a pull request is opened, the asset (a report or a dataset) is deployed to our test workspace. When the pull request is merged, the asset is deployed to our production workspace. 
+
+There is a folder for datasets and a folder for reports. Within those folders is one folder for each workspace these assets may need to be deployed to. 
+
 For more details on the reusable workflow including additional configuration options, see the [Reusable Power BI Workflows Repo](https://github.com/nathangiusti/Power-BI-Reusable-Workflows)
 
 # Prerequisites
