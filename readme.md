@@ -59,7 +59,7 @@ jobs:
   workspace-deploy:
     uses: nathangiusti/Power-BI-Reusable-Workflows/.github/workflows/workspace-deploy.yml@main
     with:
-      tenant_id: cef04b19-7776-4a94-b89b-375c77a8f936
+      tenant_id: XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
       config_file: .github/config/report_deploy_config.yaml
     secrets:
       client_id: ${{ secrets.CLIENT_ID }}
@@ -84,7 +84,7 @@ jobs:
   pipeline-deploy:
     uses: nathangiusti/Power-BI-Reusable-Workflows/.github/workflows/pipeline-deploy.yml@main
     with:
-      tenant_id: cef04b19-7776-4a94-b89b-375c77a8f936
+      tenant_id: XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
       config_file: .github/config/report_deploy_config.yaml
       source_stage_order: 1
     secrets:
@@ -109,7 +109,7 @@ jobs:
     uses: nathangiusti/Power-BI-Reusable-Workflows/.github/workflows/te-deploy.yml@main
     with:
       folder: Datasets
-      tenant_id: cef04b19-7776-4a94-b89b-375c77a8f936
+      tenant_id: XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
       config_file: .github/config/test_dataset_deploy.yaml
       deploy_roles: true
       deploy_partitions: true
@@ -133,7 +133,7 @@ jobs:
   deploy_to_test:
     uses: nathangiusti/Power-BI-Reusable-Workflows/.github/workflows/te-deploy.yml@main
     with:
-      tenant_id: cef04b19-7776-4a94-b89b-375c77a8f936
+      tenant_id: XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
       config_file: .github/config/prod_dataset_deploy.yaml
       folder: Datasets
       deploy_roles: true
